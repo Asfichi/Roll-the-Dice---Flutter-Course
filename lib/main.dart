@@ -7,6 +7,7 @@ import 'package:confetti/confetti.dart';
 void main() {
   return runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.red,
         appBar: AppBar(
@@ -73,44 +74,41 @@ class _DicePageState extends State<DicePage> with TickerProviderStateMixin {
                 ),
               ],
             ),
-            ElevatedButton(
-                child: Text('Roll the dices'),
-                onPressed: () {
-                  //  final player = AudioPlayer();
-                  // will immediately start playing
-                  player.play(AssetSource('diceroll.mp3'));
-                  setState(() {
-                    diceNumberFirst = Random().nextInt(6) + 1;
-                    diceNumberSecond = Random().nextInt(6) + 1;
+            GestureDetector(
+              onTap: () {
+                player.play(AssetSource('diceroll.mp3'));
+                setState(() {
+                  diceNumberFirst = Random().nextInt(6) + 1;
+                  diceNumberSecond = Random().nextInt(6) + 1;
 
-                    controller2.animateBack(51,
-                        duration: Duration(milliseconds: 1300));
-                    controller.animateTo(51,
-                        duration: Duration(milliseconds: 1500));
+                  controller2.animateBack(51,
+                      duration: Duration(milliseconds: 1300));
+                  controller.animateTo(51,
+                      duration: Duration(milliseconds: 1500));
 
-                    Future.delayed(Duration(milliseconds: 1500), () {
-                      controller.reset();
-                      controller2.reset();
-                      if (diceNumberFirst == diceNumberSecond) {
-                        confettiController.play();
-                        controllerClapp.animateTo(29,
-                            duration: Duration(milliseconds: 5000));
-                        // controllerClapp.repeat(
-                        //     min: 0,
-                        //     max: 15,
-                        //     period: const Duration(milliseconds: 500));
-                        player2.play(AssetSource('match.mp3'));
-                      } else {
-                        confettiController.stop();
-                        controllerClapp.reset();
-                      }
-                      //  player.play('assets/diceroll.mp3' as Source);
-                    });
+                  Future.delayed(Duration(milliseconds: 1500), () {
+                    controller.reset();
+                    controller2.reset();
+                    if (diceNumberFirst == diceNumberSecond) {
+                      confettiController.play();
+                      controllerClapp.animateTo(29,
+                          duration: Duration(milliseconds: 5000));
+                      // controllerClapp.repeat(
+                      //     min: 0,
+                      //     max: 15,
+                      //     period: const Duration(milliseconds: 500));
+                      player2.play(AssetSource('match.mp3'));
+                    } else {
+                      confettiController.stop();
+                      controllerClapp.reset();
+                    }
                   });
-                }),
-            GifImage(
-              controller: controllerClapp,
-              image: AssetImage('images/yesss.gif'),
+                });
+              },
+              child: GifImage(
+                controller: controllerClapp,
+                image: AssetImage('images/win.gif'),
+              ),
             ),
           ],
         ),
